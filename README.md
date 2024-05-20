@@ -1,306 +1,400 @@
-# Introduction
-This is an addon for using [ComfyUI](https://github.com/comfyanonymous/ComfyUI) in Blender. It will convert ComfyUI nodes into Blender nodes, letting you use ComfyUI inside Blender without having to switch between programs.
-## Features
-
-- Converts ComfyUI nodes to Blender nodes
-- Edit launch arguments in the n-menu (sidebar)/addon preferences, or just connect to a running ComfyUI process
-- Support for Blender nodes like camera input or compositing data
-- Draw masks with Grease pencil
-- Blender-like node groups
-- Queue batch processing with mission excel
-- Node tree/workflow presets and node group presets
-- Image previews for models in the Load Checkpoint node
-- Can directly input or replace the 3D models in Blender
-- By using composite can output perfect controlnet image
-
-Here are some workflow showcases:
-You can find all these workflow presets in `ComfyUI-BlenderAI-node/presets/`
-
-### Camera input
-![image](https://github.com/AIGODLIKE/ComfyUI-BlenderAI-node/assets/116185401/f087f254-5486-4d9f-9a13-d327abed3e14)
-
-### Camera input with roop
-
-https://github.com/AIGODLIKE/ComfyUI-BlenderAI-node/assets/116185401/cb96dd60-b93a-4f09-9ab6-043b66617313
-
-### Import or replace AI generated meshes in the 3D Viewport
-
-![image](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/92b2913f-f20b-4e6c-85b6-e9f60a7b58f1)
-
-### Composite depth channel
-
-![image](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/2386dc4d-6faa-4054-83e7-93f49a27962a)
-
-### Pose characters using Blender's bones
-
-![image](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/484c12bf-55b8-4baf-92df-e422fd900cbf)
+# ComfyUI-Custom-Scripts
 
 # Installation
 
-## WINDOWS 10\\11
-
-1. **Install Blender**
-
-First, you need to install [Blender](https://www.blender.org/download/)(Recommend Blender 3.5, 3.6.X, or previous 4.0).
-
-![image](https://github.com/AIGODLIKE/ComfyUI-BlenderAI-node/assets/116185401/aacf1cfe-ae44-4930-9a93-c226a8408066)
-
-2. **Install this add-on（ComfyUI BlenderAI node）**
-<!--- TODO: "ComfyUI BlenderAI node" is awkward wording. Come up with a better name? -->
-
-- Install from Blender's preferences menu
-
-In Blender's preferences menu, under addons, you can install an addon by selecting the addon's zip file.
-Blender will automatically show you the addon after it's installed; if you missed it, it's in the Node category, search for "ComfyUI".
-Don't forget to enable the addon by clicking on the tickbox to the left of the addon's name!
-
-*Note*: The zip file might not have a preview image. This is normal.
-
-![Pasted image 20240319183259](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/7772234d-6d7c-40da-9a32-ee918ca719fb)
-
-
-- Install manually (recommended)
-
-This is a standard Blender add-on. You can git clone the addon to Blender's addon directory:
-
-```
-cd %USERPROFILE%\AppData\Roaming\Blender Foundation\blender\%version%\scripts\addons
-git clone https://github.com/AIGODLIKE/ComfyUI-BlenderAI-node.git --recursive
-```
-Then you can see the addon after refreshing the addons menu or restarting Blender.
-It is in the Node category, search for "ComfyUI".
-Don't forget to enable the addon by clicking on the tickbox to the left of the addon's name!
-
-## Linux
-If you're using Linux, assuming you have some experience:
-
-1. Install [Blender](https://www.blender.org/download/)
-2. Create and activate a Python venv
-3. Install [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
-4. `cd /home/**YOU**/.config/blender/**BLENDER.VERSION**/scripts/addons`
-4. `git clone https://github.com/AIGODLIKE/ComfyUI-BlenderAI-node.git --recursive`
-5. Set your ComfyUI path and your venv /bin/ path in the addon's preferences
-
-Some things will not work on Linux, or might break!
-
-# Usage
-
-1. **Prepare ComfyUI**
-
-You can download ComfyUI from here: [ComfyUI Releases](https://github.com/comfyanonymous/ComfyUI/releases)
-
-Or you can build one yourself as long as you follow this path structure:
-
-```
-├── ComfyUI
-│   ├── main.py
-│   ...
-├── python_embeded
-│   ├── python.exe
-│   ...
-```
-
-2. **Set the "ComfyUI Path" to your ComfyUI directory**
-
-![image](https://github.com/AIGODLIKE/ComfyUI-BlenderAI-node/assets/116185401/5d081ee7-0b2a-4871-bdf9-ada05bb12831)
-
-
-3. **Set the "Python Path" if you're not using the standard ComfyUI file directory**
-
-The default (empty) path is:
-```
-├── ComfyUI
-├── python_embeded
-│   ├── python.exe  <-- Here
-```
-
-If you're using a virtual environment named `venv`, the executable is in `venv/Scripts/python.exe`.
-
-4.  **Open the ComfyUI Node Editor**
-
-Switch to the ComfyUI Node Editor, press N to open the sidebar/n-menu, and click the `Launch/Connect to ComfyUI` button to launch ComfyUI or connect to it.
-Or, switch the "Server Type" in the addon's preferences to remote server so that you can link your Blender to a running ComfyUI process.
-![Pasted image 20240319185542](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/e46c3a5a-ff32-4503-8228-f101c91c6664)
-
-
-5. **Add nodes/presets**
-
-Like in the other Node Editors, you can use the shortcut `Shift`+`A` to bring up the Add menu to add nodes. You can also click on the "Replace Node Tree" or "Append Node Tree" buttons in the sidebar to add/append a node tree.
-**For image previews and input, you must use the Blender-specific nodes this addon adds, otherwise the results may not be displayed properly! 
-Using the Blender-specific nodes won't affect generation, results will still be saved as ComfyUI standard data.**
-
-![image](https://github.com/AIGODLIKE/ComfyUI-BlenderAI-node/assets/116185401/22c68423-07aa-4a07-93a9-9354880276e1)
-
-## Special Nodes for Blender
-
-### Input Image
-
-![image](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/9e89adcb-4574-4b93-b549-998db38cc128)
-
-- Input image from directory
-- Input image list from directory
-- Input image from render
-- Input image from viewport
-
-### Mask
-
-![image](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/85c29090-b751-4686-b9b9-7373f7b6ffb1)
-
-- Create a mask from Grease Pencil
-- Create a mask by projecting an object on the camera
-- Create a mask by projecting a collection on the camera
-
-### Mat Image
-
-![image](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/8fff5b65-9c7f-4053-8bc6-ea16184774ad)
-
-- Input texture from object
-- Input textures from collection objects
-
-### Save Image
-
-![image](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/edbc273d-40cd-482b-835f-fb8b69812684)
-
-- Normally saves to a folder
-- Can save to an image in Blender to replace it
-
-
-### Multiline Textbox
-
-![image](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/bdc796c0-7dec-4c5d-922e-17860941a23e)
-
-To improve writing long prompts, we made a button that can show all prompts in a separate textbox since Blender doesn't support multiline textboxes in nodes.
-When you click the button on the side of the textbox, a window will open to write prompts in.
-The first time you do this, you might need to wait. Keep your cursor over the window while typing.
-
-## Shortcut Keys
-
-### Link
-
-Select a node, then hold `D` and drag the cursor to another node's center, you can link all available widgets between them
-
-![image](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/eae1061a-c4f5-4f0c-becf-501176a7aaa2)
-
-### Search Widgets
-
-By pressing `R` when the cursor is near a widget, a pie menu will display all nodes that have this widget
-
-![image](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/2dcffa51-a261-4e22-9692-00863e4faa33)
-
-### Mask Link
-
-Hold `F` and drag the cursor to a mask node, it will automatically create a camera to genarate mask from the scene
-
-![image](https://github.com/DorotaLuna/ComfyUI-BlenderAI-node/assets/122320001/d97805e5-4f54-4e1a-9fe0-0b98192baab9)
-
-
-
-## Notes
-- Not every node can work perfectly in Blender, for example nodes regarding videos
-- You can enable the console under `Window`>`Toggle System Console` at the top left
-- Model preview images need to have the same name as the model, including the extension, for example - `model.ckpt.jpg`
-
-## Tested Nodes
-Here are some interesting nodes we've tested in Blender
-
-√ = works as in ComfyUI web
-
-? = not all functions work
-
-× = only few or no functions work
-
-|Custom Node Name|Status|
-|:----|:----|
-|[3D-Pack](https://github.com/MrForExample/ComfyUI-3D-Pack)|√|
-|[Advanced Encode](https://github.com/BlenderNeko/ComfyUI_ADV_CLIP_emb)|√|
-|[Advanced ControlNet](https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet)|√|
-|[AGL-ComfyUI-Translation](https://github.com/AIGODLIKE/AIGODLIKE-COMFYUI-TRANSLATION)|√|
-|[AlekPet Nodes](https://github.com/AlekPet/ComfyUI_Custom_Nodes_AlekPet)|√|
-|[AnimateAnyone](https://github.com/MrForExample/ComfyUI-AnimateAnyone-Evolved.git)|√|
-|[AnimateDiff](https://github.com/ArtVentureX/comfyui-animatediff)|?|
-|[AnimateDiff-Evolved](https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git)|√|
-|[BiRefNet](https://github.com/viperyl/ComfyUI-BiRefNet.git)|√|
-|[CLIP Seg](https://github.com/biegert/ComfyUI-CLIPSeg)|√|
-|[ComfyRoll](https://github.com/RockOfFire/ComfyUI_Comfyroll_CustomNodes)|√|
-|[ControlNet LLLite](https://github.com/kohya-ss/ControlNet-LLLite-ComfyUI)|√|
-|[ControlNet Preprocessors](https://github.com/Fannovel16/comfy_controlnet_preprocessors)|√|
-|[ControlNet Preprocessors AUX](https://github.com/Fannovel16/comfyui_controlnet_aux)|√|
-|[Crystools](https://github.com/crystian/ComfyUI-Crystools.git)|√|
-|[Cutoff](https://github.com/BlenderNeko/ComfyUI_Cutoff)|√|
-|[Custom-Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)|×|
-|[cg-use-everywhere](https://github.com/chrisgoringe/cg-use-everywhere.git)|?|
-|[cg-image-picker](https://github.com/chrisgoringe/cg-image-picker.git)|√|
-|[Davemane42 Nodes](https://github.com/Davemane42/ComfyUI_Dave_CustomNode)|×|
-|[Dagthomas Nodes](https://github.com/dagthomas/comfyui_dagthomas)|√|
-|[Dynamic Thresholding](https://github.com/mcmonkeyprojects/sd-dynamic-thresholding)|√|
-|[Easy Tools](https://github.com/jafshare/ComfyUI-Easy-Tools)|√|
-|[Easy Use](https://github.com/yolain/ComfyUI-Easy-Use)|√|
-|[Efficiency Nodes](https://github.com/LucianoCirino/efficiency-nodes-comfyui)|√|
-|[EllangoK Postprocessing](https://github.com/EllangoK/ComfyUI-post-processing-nodes)|√|
-|[Essentials](https://github.com/cubiq/ComfyUI_essentials.git)|√|
-|[ExLlama nodes](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes)|√|
-|[experiments](https://github.com/comfyanonymous/ComfyUI_experiments)|√|
-|[Fast Decode](https://github.com/nagolinc/ComfyUI_FastVAEDecorder_SDXL)|√|
-|[FlowtyTripoSR](https://github.com/flowtyone/ComfyUI-Flowty-TripoSR.git)|√|
-|[FreeU Advanced](https://github.com/WASasquatch/FreeU_Advanced)|√|
-|[IPAdapter](https://github.com/laksjdjf/IPAdapter-ComfyUI)|√|
-|[IPAdapter_plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus)|√|
-|[Image Grid](https://github.com/LEv145/images-grid-comfy-plugin)|√|
-|[Impact Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)|?|
-|[Impact Subpack](https://github.com/ltdrdata/ComfyUI-Impact-Subpack)|√|
-|[Inspire Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack)|√|
-|[InstantID (cubiq)](https://github.com/cubiq/ComfyUI_InstantID.git)|√|
-|[InstantID (ZHO)](https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git)|√|
-|[KJ Nodes](https://github.com/kijai/ComfyUI-KJNodes.git)|√|
-|[LaMa Preprocessor](https://github.com/mlinmg/ComfyUI-LaMA-Preprocessor)|√|
-|[Latent2RGB](https://github.com/bvhari/ComfyUI_LatentToRGB)|√|
-|[LayerDiffuse](https://github.com/huchenlei/ComfyUI-layerdiffuse)|√|
-|[LayerStyle](https://github.com/chflame163/ComfyUI_LayerStyle)|√|
-|[LCM](https://github.com/0xbitches/ComfyUI-LCM)|√|
-|[Manager](https://github.com/ltdrdata/ComfyUI-Manager)|×|
-|[Masquerade Nodes](https://github.com/BadCafeCode/masquerade-nodes-comfyui)|×|
-|[Math](https://github.com/evanspearman/ComfyMath.git)|√|
-|[Mixlab Nodes](https://github.com/shadowcz007/comfyui-mixlab-nodes.git)|?|
-|[MoonDream](https://github.com/kijai/ComfyUI-moondream.git)|√|
-|[MotionCtrl](https://github.com/chaojie/ComfyUI-MotionCtrl)|√|
-|[MotionCtrl-SVD](https://github.com/chaojie/ComfyUI-MotionCtrl-SVD)|√|
-|[Noise](https://github.com/BlenderNeko/ComfyUI_Noise)|√|
-|[Portrait Master](https://github.com/florestefano1975/comfyui-portrait-master.git)|√|
-|[Power Noise Suite](https://github.com/WASasquatch/PowerNoiseSuite)|√|
-|[Prompt Reader](https://github.com/receyuki/comfyui-prompt-reader-node)|√|
-|[QR](https://github.com/coreyryanhanson/comfy-qr)|√|
-|[OneButtonPrompt](https://github.com/AIrjen/OneButtonPrompt)|√|
-|[ReActor](https://github.com/Gourieff/comfyui-reactor-node)|√|
-|[Restart-Sampling](https://github.com/ssitu/ComfyUI_restart_sampling)|√|
-|[Roop](https://github.com/Navezjt/ComfyUI_roop.git)|√|
-|[rgthree](https://github.com/rgthree/rgthree-comfy.git)|√|
-|[SD-Latent-Interposer](https://github.com/city96/SD-Latent-Interposer)|√|
-|[SDXL_prompt_styler](https://github.com/twri/sdxl_prompt_styler)|√|
-|[SeargeSDXL](https://github.com/SeargeDP/SeargeSDXL)|√|
-|[Segment Anything](https://github.com/storyicon/comfyui_segment_anything.git)|?|
-|[StabilityNodes](https://github.com/Stability-AI/stability-ComfyUI-nodes)|√|
-|[TiledDiffusion](https://github.com/shiimizu/ComfyUI-TiledDiffusion)|√|
-|[TiledKSampler](https://github.com/BlenderNeko/ComfyUI_TiledKSampler)|√|
-|[TinyTerra](https://github.com/TinyTerra/ComfyUI_tinyterraNodes.git)|√|
-|[UltimateSDUpscale](https://github.com/ssitu/ComfyUI_UltimateSDUpscale)|?|
-|[Vextra Nodes](https://github.com/diontimmer/ComfyUI-Vextra-Nodes)|√|
-|[VLM Nodes](https://github.com/gokayfem/ComfyUI_VLM_nodes.git)|√|
-|[WAS Suite](https://github.com/WASasquatch/was-node-suite-comfyui)|?|
-|[WD14-Tagger](https://github.com/pythongosssss/ComfyUI-WD14-Tagger)|√|
-|[zfkun](https://github.com/zfkun/ComfyUI_zfkun.git)|√|
-
-# Links
-## Tutorial
-[[EN]BSLIVE ComfyUI Blender AI Node Addon for Generative AI(By Jimmy Gunawan)](https://www.youtube.com/watch?v=OvrKpAVwyco)
-
-[[EN]Generate AI Rendering with Blender ComfyUI AddOn(By Gioxyer)](https://www.youtube.com/watch?v=9rb-8D3NQ58)
-
-[[CN]无限圣杯完全使用指南](https://www.bilibili.com/video/BV1Fo4y187HC/)
-
-(Please feel free to contact me for recommendations)
-
-## Our AI website
-
-[AIGODLIKE Community](https://www.aigodlike.com/)
-
-
+1. Clone the repository:
+`git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git`  
+to your ComfyUI `custom_nodes` directory
+
+   The script will then automatically install all custom scripts and nodes.  
+   It will attempt to use symlinks and junctions to prevent having to copy files and keep them up to date.
+
+- For uninstallation:
+  - Delete the cloned repo in `custom_nodes`
+  - Ensure `web/extensions/pysssss/CustomScripts` has also been removed
+
+# Update
+1. Navigate to the cloned repo e.g. `custom_nodes/ComfyUI-Custom-Scripts`
+2. `git pull`
+
+# Features
+
+## Autocomplete
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/b5971135-414f-4f4e-a6cf-2650dc01085f)  
+Provides embedding and custom word autocomplete. You can view embedding details by clicking on the info icon on the list.  
+Define your list of custom words via the settings.  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/160ef61c-7d7e-49d0-b60f-5a1501b74c9d)  
+You can quickly default to danbooru tags using the Load button, or load/manage other custom word lists.  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/cc180b35-5f45-442f-9285-3ddf3fa320d0)
+
+## Auto Arrange Graph
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/04b06081-ca6f-4c0f-8584-d0a157c36747)  
+Adds a menu option to auto arrange the graph in order of execution, this makes very wide graphs!
+
+## Always Snap to Grid
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/66f36d1f-e579-4959-9880-9a9624922e3a)  
+Adds a setting to make moving nodes always snap to grid.
+
+## [Testing] "Better" Loader Lists
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/664caa71-f25f-4a96-a04a-1466d6b2b8b4)  
+Adds custom Lora and Checkpoint loader nodes, these have the ability to show preview images, just place a png or jpg next to the file and it'll display in the list on hover (e.g. sdxl.safetensors and sdxl.png).  
+Optionally enable subfolders via the settings:  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/e15b5e83-4f9d-4d57-8324-742bedf75439)   
+Adds an "examples" widget to load sample prompts, triggerwords, etc:  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/ad1751e4-4c85-42e7-9490-e94fb1cbc8e7)  
+These should be stored in a folder matching the name of the model, e.g. if it is `loras/add_detail.safetensors` put your files in as  `loras/add_detail/*.txt`  
+To quickly save a generated image as the preview to use for the model, you can right click on an image on a node, and select Save as Preview and choose the model to save the preview for:  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/9fa8e9db-27b3-45cb-85c2-0860a238fd3a)
+
+## Checkpoint/LoRA/Embedding Info
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/6b67bf40-ee17-4fa6-a0c1-7947066bafc2)
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/32405df6-b367-404f-a5df-2d4347089a9e)  
+Adds "View Info" menu option to view details about the selected LoRA or Checkpoint. To view embedding details, click the info button when using embedding autocomplete.
+
+## Constrain Image
+Adds a node for resizing an image to a max & min size optionally cropping if required.
+
+## Custom Colors
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/fa7883f3-f81c-49f6-9ab6-9526e4debab6)  
+Adds a custom color picker to nodes & groups
+
+## Favicon Status
+![image](https://user-images.githubusercontent.com/125205205/230171227-31f061a6-6324-4976-bed9-723a87500cf3.png)
+![image](https://user-images.githubusercontent.com/125205205/230171445-c7202a45-b511-4d69-87fa-945ad44c063f.png)  
+Adds a favicon and title to the window, favicon changes color while generating and the window title includes the number of prompts in the queue
+
+## Image Feed
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/caea0d48-85b9-4ca9-9771-5c795db35fbc)
+Adds a panel showing images that have been generated in the current session, you can control the direction that images are added and the position of the panel via the ComfyUI settings screen and the size of the panel and the images via the sliders at the top of the panel.  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/ca093d38-41a3-4647-9223-5bd0b9ee4f1e)
+
+## KSampler (Advanced) denoise helper
+Provides a simple method to set custom denoise on the advanced sampler  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/42946bd8-0078-4c7a-bfe9-7adb1382b5e2)
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/7cfccb22-f155-4848-934b-a2b2a6efe16f)
+
+## Lock Nodes & Groups
+![image](https://user-images.githubusercontent.com/125205205/230172868-5c5a943c-ade1-4799-bf80-cc931da5d4b2.png)  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/cfca09d9-38e5-4ecd-8b73-1455009fcd67)  
+Adds a lock option to nodes & groups that prevents you from moving them until unlocked
+
+## Math Expression
+Allows for evaluating complex expressions using values from the graph. You can input `INT`, `FLOAT`, `IMAGE` and `LATENT` values.  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/1593edde-67b8-45d8-88cb-e75f52dba039)  
+Other nodes values can be referenced via the `Node name for S&R` via the `Properties` menu item on a node, or the node title.  
+Supported operators: `+ - * /` (basic ops) `//` (floor division) `**` (power) `^` (xor) `%` (mod)  
+Supported functions `floor(num, dp?)` `floor(num)` `ceil(num)` `randomint(min,max)`  
+If using a `LATENT` or `IMAGE` you can get the dimensions using `a.width` or `a.height` where `a` is the input name.
+
+## Node Finder
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/177d2b67-acbc-4ec3-ab31-7c295a98c194)  
+Adds a menu item for following/jumping to the executing node, and a menu to quickly go to a node of a specific type.
+
+## Preset Text
+![image](https://user-images.githubusercontent.com/125205205/230173939-08459efc-785b-46da-93d1-b02f0300c6f4.png)  
+Adds a node that lets you save and use text presets (e.g. for your 'normal' negatives)
+
+## Quick Nodes
+![image](https://user-images.githubusercontent.com/125205205/230174266-5232831a-a03b-4bf7-bc8b-c45466a0bc64.png)  
+Adds various menu items to some nodes for quickly setting up common parts of graphs
+
+## Play Sound
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/9bcf9fb3-5898-4432-a974-fb1e17d3b7e8)  
+Plays a sound when the node is executed, either after each prompt or only when the queue is empty for queuing multiple prompts.  
+You can customize the sound by replacing the mp3 file `web/extensions/pysssss/CustomScripts/assets\notify.mp3`
+
+## System Notification
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/30354775/993fd783-5cd6-4779-aa97-173bc06cc405)
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/30354775/e45227fb-5714-4f45-b96b-6601902ef6e2)
+
+Sends a system notification via the browser when the node is executed, either after each prompt or only when the queue is empty for queuing multiple prompts.
+
+## [WIP] Repeater
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/ec0dac25-14e4-4d44-b975-52193656709d)
+Node allows you to either create a list of N repeats of the input node, or create N outputs from the input node.  
+You can optionally decide if you want to reuse the input node, or create a new instance each time (e.g. a Checkpoint Loader would want to be re-used, but a random number would want to be unique)
+TODO: Type safety on the wildcard outputs to require match with input
+
+## Show Text
+![image](https://user-images.githubusercontent.com/125205205/230174888-c004fd48-da78-4de9-81c2-93a866fcfcd1.png)  
+Takes input from a node that produces a string and displays it, useful for things like interrogator, prompt generators, etc.
+
+## Show Image on Menu
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/b6ab58f2-583b-448c-bcfc-f93f5cdab0fc)  
+Shows the current generating image on the menu at the bottom, you can disable this via the settings menu.
+
+## String Function
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/01107137-8a93-4765-bae0-fcc110a09091)  
+Supports appending and replacing text  
+`tidy_tags` will add commas between parts when in `append` mode.  
+`replace` mode supports regex replace by using `/your regex here/` and you can reference capturing groups using `\number` e.g. `\1`
+
+## Touch Support
+Provides basic support for touch screen devices, its not perfect but better than nothing
+
+## Widget Defaults
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/3d675032-2b19-4da8-a7d7-fa2d7c555daa)  
+Allows you to specify default values for widgets when adding new nodes, the values are configured via the settings menu  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/7b57a3d8-98d3-46e9-9b33-6645c0da41e7)
+
+## Workflows
+Adds options to the menu for saving + loading workflows:  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/7b5a3012-4c59-47c6-8eea-85cf534403ea)
+
+## Workflow Images
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/06453fd2-c020-46ee-a7db-2b8bf5bcba7e)  
+Adds menu options for importing/exporting the graph as SVG and PNG showing a view of the nodes
+
+## (Testing) Reroute Primitive
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/8b870eef-d572-43f9-b394-cfa7abbd2f98)  Provides a node that allows rerouting primitives.  
+The node can also be collapsed to a single point that you can drag around.  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/a9bd0112-cf8f-44f3-af6d-f9a8fed152a7)  
+Warning: Don't use normal reroutes or primitives with these nodes, it isn't tested and this node replaces their functionality.
+
+<br>
+<br>
+
+
+## WD14 Tagger
+Moved to: https://github.com/pythongosssss/ComfyUI-WD14-Tagger
+
+## Link Render Mode  
+![image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts/assets/125205205/ad3be76b-43b1-455e-a64a-bf2a6571facf)  
+Allows you to control the rendering of the links between nodes between straight, linear & spline, e.g. Straight. 
+
+<br>
+<br>
+
+
+# Changelog
+
+## 2023-09-22
+### Minor
+- ✨ Use Civitai image as preview
+- 🐛 CTRL+Enter on autocomplete will no longer accept the suggestions as it is the shortcut for queuing a prompt.
+- 🐛 Fix using numbers in widget defaults
+- ✨ Support setting node properties (e.g. title, colors) via widget defaults
+
+## 2023-09-13
+### New
+- ✨ Ability to "send" an image to a Load Image node in either the current or a different workflow
+### Minor
+- ✨ Add support for A1111 autocomplete CSV format
+- ✨ Allow setting custom node for middle click to add node
+
+## 2023-09-10
+### Minor
+- 🐛 Fix rendering new lines in workflow image exports
+
+## 2023-09-08
+### New
+- ✨ Add Load + Save Text file nodes, you can configure the allowed directories in the `user/text_file_dirs.json` file
+### Minor
+- 🎨 Show autocomplete alias word on popup
+- ✨ Add setting to disable middle click from adding a reroute node
+- 🎨 Add prompt for setting custom column count on image feed  (click the column count label)
+
+## 2023-09-07
+### New
+- ✨ Support Unicode (e.g. Chinese) and word aliases in autocomplete.
+
+## 2023-09-05
+### Minor
+- 🎨 Disable autocomplete on math node
+- 🐛 Fix Show Text node always resizing on update
+
+### Minor
+- 🎨 Better adding of preview image to menu (thanks to @zeroeightysix)
+- 🎨 UX improvements for image feed (thanks to @birdddev)
+- 🐛 Fix Math Expression expression not showing on updated ComfyUI
+- 
+## 2023-08-30
+### Minor
+- 🎨 Allow jpeg lora/checkpoint preview images
+- ✨ Save ShowText value to embedded image metadata
+  
+## 2023-08-29
+### Minor
+- ✨ Option to auto insert `, ` after autocomplete
+- 🎨 Exclude arrow keys from triggering autocomplete
+- 🐛 Split paths by `\` and `/` on Windows for submenus
+
+## 2023-08-28
+### New
+- ✨ Add custom autocomplete word list setting
+- ✨ Support autocomplete word priority sorting
+- ✨ Support autocomplete matching anywhere in word rather than requiring starts with
+
+## 2023-08-27
+### New
+- ✨ Add Checkpoint info
+- ✨ Add embedding autocomplete
+- ✨ Add embedding info
+### Major
+- ♻️ Refactor LoRA info
+
+## 2023-08-26
+### Minor
+- 🐛 Fix using text widget values in Math Expression not casting to number
+- 🎨 Fix padding on lightbox next arrow
+ 
+## 2023-08-25
+### Minor
+- ♻️ Support older versions of python
+  
+## 2023-08-24
+### Minor
+- 🐛 Fix extracting links from LoRA info notes
+
+## 2023-08-23
+### Major
+- 🚨 Update to use `WEB_DIRECTORY` feature instead of manual linking/copying web files
+
+## 2023-08-22
+### New
+- ✨ Math Expression now supports IMAGE and LATENT inputs, to access the dimensions use `a.width`, `b.height`
+- 🎨 Removed STRING output on Math Expression, now draws the result onto the node
+
+## 2023-08-21
+### New
+- ✨ Allow custom note (named {file}.txt) to show in LoRA info
+- ✨ Query Civita API using the model hash to provide link
+  
+## 2023-08-20
+### New
+- ✨ Add LoRA Info menu option for displaying LoRA metadata
+### Minor
+- 🐛 Fix crash on preset text replacement (thanks to @sjuxax)
+
+## 2023-08-19
+### New
+- ✨ Add support for importing JPG files with embedded metadata (e.g. from Civitai)
+### Minor
+- 🐛 Fix crash on graph arrange where LiteGraph sometimes stores links to deleted nodes
+- 🐛 Fix a couple of rendering issues in workflow export
+
+## 2023-08-18
+### New
+- ✨ Add "example" widget to custom LoRA + Checkpoint loader allowing you to quickly view saved prompts, triggers, etc
+- ✨ Add quick "Save as Preview" option on images to save generated images for models
+
+## 2023-08-16
+### New
+- ✨ Add repeater node for generating lists or quickly duplicating nodes
+### Minor
+- 🐛 Support quick Add LoRA on custom Checkpoint Loader
+- ✨ Support `randomint(min,max)` function in math node
+- 🎨 Use relative imports to support proxied urls not on root path (thanks to @mcmonkey4eva)
+
+## 2023-08-13
+### Minor
+- ✨ Support `round` `floor` `ceil` functions in math node
+- 🐛 Fix floor division in math node
+
+## 2023-08-12
+### New
+- 🎨 Image feed now uses a lightbox for showing images
+### Minor
+- 🎨 Better loader lists now supports images named `{name}.preview.png`
+
+## 2023-08-11
+### Minor
+- ✨ Enable filter box on submenus
+  
+## 2023-08-05
+### Major
+- 🚨 The ComfyUI Lora Loader no longer has subfolders, due to compatibility issues you need to use my Lora Loader if you want subfolers, these can be enabled/disabled on the node via a setting (🐍 Enable submenu in custom nodes)
+### New
+- ✨ Add custom Checkpoint Loader supporting images & subfolders
+- ✨ Add Play Sound node for notifying when a prompt is finished
+### Minor
+- ✨ Quick Nodes supports new LoRA loader ("Add 🐍 LoRA")
+- ♻️ Disable link render mode if ComfyUI has native support
+
+## 2023-08-04
+### Minor
+- ✨ Always snap to grid now applies on node resize
+- 🐛 Fix reroute primitive widget value not being restored on reload
+- ✨ Workflows now reuse last filename from load & save - save must be done by the submenu
+
+## 2023-08-02
+### New
+- ✨ Add "Always snap to grid" setting that does the same as holding shift, aligning nodes to the grid
+### Minor
+- 🚨 No longer populates image feed when its closed
+- 🐛 Allow lock/unlock of multiple selected nodes
+
+## 2023-08-01
+### Minor
+- 🎨 Image feed now uses comfy theme variables for colors
+- 🐛 Link render mode redraws graph on change of setting instead of requiring mouse move
+
+## 2023-07-30
+- 🎨 Update to image feed to make more user friendly, change image size to column count, various other tweaks (thanks @DrJKL)
+
+## 2023-07-30
+### Major
+- 🐛 Fix issue with context menu (right click) not working for some users after Lora script updates
+### New
+- ✨ Add "Custom" option to color menu for nodes & groups
+### Minor
+- 🐛 Fix String Function values converted to unconnected inputs outputting the text "undefined"
+
+## 2023-07-29
+### New
+- ✨ Added Reroute Primitive combining the functionality of reroutes + primitives, also allowing collapsing to a single point.
+- ✨ Add support for exporting workflow images as PNGs and optional embedding of metadata in PNG and SVG
+### Minor
+- ✨ Remove new lines in Math Expression node
+- ✨ String function is now an output node
+- 🐛 Fix conflict between Lora Loader + Lora submenu causing the context menu to be have strangely (#23, #24)
+- 🎨 Rename "SVG -> Import/Export" to "Workflow Image" -> Import/Export
+
+## 2023-07-27
+### New
+- ✨ Added custom Lora Loader that includes image previews
+### Minor
+- ✨ Add preview output to string function node
+- 📄 Updated missing/out of date parts of readme
+- 🐛 Fix crash on show image on menu when set to not show (thanks @DrJKL)
+- 🐛 Fix incorrect category (util vs utils) for math node (thanks @DrJKL)
+
+## 2023-07-27
+### Minor
+- ✨ Save Image Feed close state
+- 🐛 Fix unlocked group size calculation
+
+## 2023-07-21 + 22
+### Minor
+- 🐛 Fix preset text incompatibility with Impact Pack (thanks @ltdrdata)
+
+## 2023-07-13
+### New
+- ✨ Add Math Expression node for evaluating expressions using values from the graph
+### Minor
+- ✨ Add settings for image feed location + image order
+
+## 2023-06-27
+### Minor
+- 🐛 Fix unlocking group using incorrect size
+- ✨ Save visibility of image feed
+
+## 2023-06-18
+### Major Changes
+- ✨ Added auto installation of scripts and `__init__` (thanks @TashaSkyUp)
+- ♻️ Reworked folder structure
+- 🚨 Renamed a number of nodes to include `pysssss` to prevent name conflicts
+- 🚨 Remove Latent Upscale By as it is now a built in node in ComfyUI
+- 🚨 Removed Anime Segmentation to own repo
+### New
+- ✨ Add Link Render Mode setting to choose how links are rendered
+- ✨ Add Constrain Image node for resizing nodes to a min/max resolution with optional cropping
+- ✨ Add Show Image On Menu to include the latest image output on the menu
+- ✨ Add KSamplerAdvanced simple denoise prompt for configuring the node using steps + denoise
+- 🎨 Add sizing options to Image Feed
+
+### Other
+- ♻️ Include [canvas2svg](https://gliffy.github.io/canvas2svg/) for SVG export in assets to prevent downloading at runtime
+- 🎨 Add background color (using theme color) to exported SVG
+- 🐛 Fix Manage Widget Defaults to work with new ComfyUI settings dialog
+- 🐛 Increase Image Feed z-index to prevent node text overlapping
