@@ -1,6 +1,7 @@
 import bpy
+from .words_collection import words
 from ..utils import PkgInstaller
-from ..translation import ctxt
+from ..translations import ctxt
 REGISTERED = [False]
 
 REQUIREMENTS = ["imgui"]
@@ -31,12 +32,13 @@ def disable_multiline_text():
 
 class EnableMLT(bpy.types.Operator):
     bl_idname = "sdn.enable_mlt"
-    bl_description = "Enable MLT"
     bl_label = "Enable MLT"
+    bl_description = "Enable multiline text for this textbox"
     bl_translation_context = ctxt
 
     def execute(self, context):
         if not enable_multiline_text():
             self.report({"ERROR"}, "MultiLineText Not Enabled")
+            return {"FINISHED"}
         bpy.ops.sdn.multiline_text("INVOKE_DEFAULT")
         return {"FINISHED"}
