@@ -1,6 +1,10 @@
 from .tree import rtnode_reg, rtnode_unreg
-from .manager import TaskManager, Task
+from .nodegroup import nodegroup_reg, nodegroup_unreg
+from .manager import TaskManager, Task, FakeServer
+from .custom_support import crystools_monitor
 try:
     from . import aiprompt
-except:
-    pass
+    from . import node_process
+except Exception as e:
+    import traceback
+    traceback.print_exc()
